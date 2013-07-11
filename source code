@@ -1,0 +1,56 @@
+<?php
+
+require('fpdf.php'); 
+class PDF extends FPDF {
+ 
+function Header() {
+    $this->SetFont('Times','B',18); //prototype of the setFont function is SetFont(string family [, string style [, float size]]) 
+    $this->SetY(0.5);// Moves the current abscissa back to the left margin and sets the ordinate. If the passed value is negative, it is relative to the bottom of the page. 
+    $this->Cell(0, .25, "wetechies ".$this->PageNo(), 'T', 2, "R");
+    //reset Y
+    $this->SetY(1);
+}
+ 
+function Footer() {
+//This is the footer; it's repeated on each page.
+
+    $this->Image("wetechies.jpg", (8.5/2)-1.5, 9.8, 3, 1, "JPG", "http://wetechies.blogspot.in");//prototype --> Image(string file [, float x [, float y [, float w [, float h [, string type [, mixed link]]]]]]) 
+}
+ 
+}
+ 
+//class instantiation
+$pdf=new PDF("P","in","Letter");
+ 
+$pdf->SetMargins(1.5,1.5,1.5);
+ 
+$pdf->AddPage();
+$pdf->SetFont('Times','I',16);
+ 
+$wetechies1="Group of techies have come together to share there experience in various domains.";
+  
+$wetechies2="Wetechies is a group of techies post about some technology/domain in
+which they are interested, any new thing they learn they will share here ,";
+  
+$wetechies3 ="its not related to single techi but any one can post here if you want to
+share your knowledge and express yourself.";
+  
+$pdf->SetFillColor(240, 100, 100);
+$pdf->SetFont('Times','BU',12);
+  
+//Cell(float w[,float h[,string txt[,mixed border[,
+//int ln[,string align[,boolean fill[,mixed link]]]]]]])
+$pdf->Cell(0, .25, "wetechies", 1, 2, "C", 1);
+  
+$pdf->SetFont('Times','B',12);
+//MultiCell(float w, float h, string txt [, mixed border [, string align [, boolean fill]]])
+$pdf->MultiCell(0, 0.25,$wetechies1, 1, "J");
+$pdf->MultiCell(0, 0.25,$wetechies2, 1, "R");
+$pdf->MultiCell(0, 0.25,$wetechies3, 1, "J");
+ 
+$pdf->AddPage();
+$pdf->Write(0.5, $wetechies1.$wetechies2.$wetechies3);
+  
+$pdf->Output();
+
+?>
